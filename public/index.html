@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CMMS Automation Indarung V</title><link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div id="loginView" class="login-wrap">
+  <form id="loginForm" class="login-card">
+    <div class="brand-mark">CMMS</div><h1>Maintenance Management</h1><p>Automation Indarung V · Pilot Area</p>
+    <label>Email<input id="email" type="email" value="admin@localhost" required autocomplete="username"></label>
+    <label>Password<input id="password" type="password" value="" required autocomplete="current-password"></label>
+    <button type="submit">Masuk</button><div id="loginError" class="error"></div>
+    <small>Gunakan akun yang dibuat melalui environment deployment. Jangan gunakan password contoh untuk produksi.</small>
+  </form>
+</div>
+<div id="appView" class="app hidden">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">CMMS</div><div><b>Maintenance</b><small>Automation Indarung V</small></div></div>
+    <nav>
+      <button class="nav active" data-page="dashboard">▦ Dashboard</button>
+      <button class="nav" data-page="workorders">▤ Work Orders</button>
+      <button class="nav" data-page="equipment">▣ Equipment</button>
+      <button class="nav" data-page="pm">◷ Preventive Maintenance</button>
+      <button class="nav" data-page="spares">◈ Spare Parts</button>
+      <button class="nav" data-page="reliability">⌁ Reliability</button>
+    </nav>
+    <div class="side-bottom"><small id="userLabel"></small><button id="logoutBtn" class="outline">Keluar</button></div>
+  </aside>
+  <main class="main">
+    <header><div><div class="eyebrow">PILOT AREA / AUTOMATION</div><h1 id="pageTitle">Dashboard</h1></div><div class="header-actions"><span class="live-dot"></span><span>Database connected</span></div></header>
+    <div id="notice" class="notice hidden"></div>
+    <section id="dashboardPage" class="page"></section>
+    <section id="workordersPage" class="page hidden"></section>
+    <section id="equipmentPage" class="page hidden"></section>
+    <section id="pmPage" class="page hidden"></section>
+    <section id="sparesPage" class="page hidden"></section>
+    <section id="reliabilityPage" class="page hidden"></section>
+  </main>
+</div>
+<dialog id="woDialog"><form id="woForm" method="dialog" class="dialog-form">
+  <div class="dialog-head"><h2>Buat Work Order</h2><button type="button" class="icon-btn" id="closeWo">✕</button></div>
+  <label>Judul pekerjaan<input name="title" required placeholder="Contoh: Pemeriksaan komunikasi Remote I/O"></label>
+  <label>Equipment<select name="equipment_id" id="woEquipment"><option value="">Pilih equipment (opsional)</option></select></label>
+  <div class="two-col"><label>Jenis<select name="work_type"><option value="breakdown">Breakdown</option><option value="corrective" selected>Corrective</option><option value="preventive">Preventive</option><option value="inspection">Inspection</option><option value="improvement">Improvement</option><option value="shutdown">Shutdown</option></select></label>
+  <label>Prioritas<select name="priority"><option value="emergency">Emergency</option><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></label></div>
+  <label>Deskripsi / gejala<textarea name="description" rows="3"></textarea></label>
+  <button type="submit">Simpan Work Order</button>
+</form></dialog>
+<dialog id="equipmentDialog"><form id="equipmentForm" method="dialog" class="dialog-form">
+  <div class="dialog-head"><h2>Tambah Equipment</h2><button type="button" class="icon-btn" id="closeEquipment">✕</button></div>
+  <label>Kode equipment<input name="equipment_code" required placeholder="AUT-XXX-001"></label>
+  <label>Nama equipment<input name="equipment_name" required></label>
+  <div class="two-col"><label>Subsystem<input name="system_name"></label><label>Criticality<select name="criticality"><option value="A">A - Kritis</option><option value="B" selected>B - Sedang</option><option value="C">C - Rendah</option></select></label></div>
+  <label>Manufacturer / model<input name="manufacturer" placeholder="Opsional"></label><label>Catatan<textarea name="notes" rows="2"></textarea></label>
+  <button type="submit">Simpan Equipment</button>
+</form></dialog>
+<script src="/app.js"></script>
+</body></html>

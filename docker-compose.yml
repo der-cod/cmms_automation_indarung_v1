@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: cmms_automation
+      POSTGRES_USER: cmms
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_this_password}
+    volumes:
+      - cmms_pgdata:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./db/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cmms -d cmms_automation"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgres://cmms:${POSTGRES_PASSWORD:-change_this_password}@db:5432/cmms_automation
+      JWT_SECRET: ${JWT_SECRET:-replace-this-secret-before-deployment}
+      ADMIN_NAME: ${ADMIN_NAME:-Administrator CMMS}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@localhost}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-ChangeMe123!}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+    ports:
+      - "3000:3000"
+volumes:
+  cmms_pgdata:
